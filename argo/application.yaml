@@ -8,8 +8,8 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   source:
-    repoURL: https://github.com/d-cryptic/temp
-    targetRevision: main
+    repoURL: https://github.com/d-cryptic/guestbook
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: default
