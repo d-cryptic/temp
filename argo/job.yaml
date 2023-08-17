@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: app-notification-
+  name: app-notification
   namespace: argocd
   annotations:
     argocd.argoproj.io/hook: PostSync
