@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: app-notification-
+  name: notification
   namespace: argocd
 spec:
   template:
@@ -10,9 +10,13 @@ spec:
         - name: notification
           image: curlimages/curl
       command:
-        - "curl"
-        - "-X"
-        - "POST -H 'Content-type: application/json'"
-        - --data '{"text":"Hello from curl command!"}' https://api.flock.com/hooks/sendMessage/b450fe5f-e66a-446a-bc4f-76b6484c30a6
+        [
+          "curl",
+          "-X",
+          "POST -H 'Content-type: application/json'",
+          "--data",
+          '{"text":"Presync!"}',
+          "https://api.flock.com/hooks/sendMessage/b450fe5f-e66a-446a-bc4f-76b6484c30a6",
+        ]
   restartPolicy: Never
   backoffLimit: 2
