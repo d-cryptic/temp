@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: temp-repo
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: PreSync, PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  source:
+    repoURL: https://github.com/d-cryptic/temp
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      preSync:
+        - syncJob:
+            container:
+              image: curlimages/curl
+              command:
+                [
+                  "curl",
+                  "-X",
+                  "POST -H 'Content-type: application/json'",
+                  "--data",
+                  '{"text":"Presync!"}',
+                  "https://api.flock.com/hooks/sendMessage/b450fe5f-e66a-446a-bc4f-76b6484c30a6",
+                ]
+      postSync:
+        - syncJob:
+            container:
+              image: curlimages/curl
+              command:
+                [
+                  "curl",
+                  "-X",
+                  "POST -H 'Content-type: application/json'",
+                  "--data",
+                  '{"text":"PostSync!"}',
+                  "https://api.flock.com/hooks/sendMessage/b450fe5f-e66a-446a-bc4f-76b6484c30a6",
+                ]
